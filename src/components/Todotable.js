@@ -1,15 +1,21 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button, Table } from 'react-bootstrap'
 import MyVerticallyCenteredModal from './Updatetask';
-
+import { Taskcontext } from '../context/Taskcontact';
 const Todotable = () => {
-    const update = () => {
+
+    const { state, dispatch } = useContext(Taskcontext)
+    const { taskList } = state
+
+    const update = (task) => {
         setModalShow(true)
+        dispatch({ type: 'SET_SELECTED_TASK', payload: task })
     }
 
-    const deleted = () => {
-        console.log("del");
+    const deleted = (task) => {
+        dispatch({ type: 'REMOVE_TASK', payload: task })
     }
+
     const [modalShow, setModalShow] = useState(false);
 
     return (
@@ -17,22 +23,28 @@ const Todotable = () => {
             <Table striped bordered hover>
                 <thead className='text-center'>
                     <tr>
-                        <th>#</th>
+                        <th>R.no</th>
                         <th>Title</th>
                         <th>Description</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className='text-center'>
-                        <td>1</td>
-                        <td>Don</td>
-                        <td>Don</td>
-                        <td>
-                            <Button variant="primary" className='mx-3' onClick={() => update()}><i className="bi bi-pencil-square"></i></Button>
-                            <Button variant="primary"><i className="bi bi-trash3" onClick={() => deleted()}></i></Button>
-                        </td>
-                    </tr>
+                    {
+                        taskList && taskList.map((task, index) => {
+                            return (
+                                <tr className='text-center' key={task.id}>
+                                    <td>{index + 1}</td>
+                                    <td>{task.title}</td>
+                                    <td>{task.dis}</td>
+                                    <td>
+                                        <Button variant="primary" className='mx-3' onClick={() => update(task)}><i className="bi bi-pencil-square"></i></Button>
+                                        <Button variant="primary"><i className="bi bi-trash3" onClick={() => deleted(task)}></i></Button>
+                                    </td>
+                                </tr>
+                            )
+                        })
+                    }
                 </tbody>
             </Table>
             <MyVerticallyCenteredModal

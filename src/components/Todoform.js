@@ -1,12 +1,19 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
+import { Taskcontext } from '../context/Taskcontact'
 
 const Todoform = () => {
+    const {state, dispatch} = useContext(Taskcontext)
     const [title, setTitle] = useState("")
     const [dis, setDis] = useState("")
+
     const addtask = (e) => {
         e.preventDefault()
+        dispatch({type: 'ADD_TASK', payload: {title, dis}})
+        setTitle("")
+        setDis("")
     }
+
     return (
         <>
             <section className='my-5'>

@@ -12,7 +12,7 @@ function App() {
         <Row className='justify-content-md-center'>
           <Col lg='6'>
             <Todoform />
-            <Todotable/>
+            <Todotable />
           </Col>
         </Row>
       </Container>
